@@ -1,0 +1,281 @@
+---
+title: "data.frame, types, and more on functions"
+output: 
+  html_document: 
+    toc: yes
+---
+
+Classes of R objects
+====================
+
+``` {r}
+
+# This class is called "numeric", and holds a number (that may have a decimal)
+class(1)
+
+# This class is called "logical", and takes the value TRUE or FALSE
+alogical <- TRUE  
+class(alogical)
+
+# This class is called "character", and holds strings of text
+acharacter <- "I am a character"
+class(acharacter)
+
+# This is a class called "factor". It's like character, but when elements with the same text are grouped
+afactor <- factor("A")
+class(afactor)
+
+```
+
+The classes we just discussed were `numeric`, `logical`, `character`, `factor`. 
+To convert from one to the other, we can use the set of functions `as.CLASSNAME`.
+For example `as.numeric` will convert something to a numeric.
+
+```{r}
+# Convert a chracter to a number
+class("1")
+
+as.numeric("1")
+
+class(as.numeric("1"))
+```
+
+Below is another example converting a factor to a character
+```{r}
+afactor
+
+as.character(afactor)
+```
+
+Note that you can't mix element types within a vector, or it will "coerce" some elements to ensure they are all the same class
+```{r}
+c(1, 'a')    # 1 is made into a character
+```
+
+
+
+The list, another class of R object
+-----------------------------------
+
+Unlike a vector, a list can hold any object of any type.
+It is like a sequence of boxes. Each box can have a name.
+
+```{r}
+vec1 <- 1:3
+vec2 <- 10:20
+
+a_list <- list(a = vec1, b = vec2)
+a_list
+
+# can use $ to select elements
+a_list$a
+a_list$b
+```
+
+
+
+data.frame is a special type of list
+------------------------------------
+
+```{r}
+# note that a and b below are the columns of the data frame
+# each of their 10 entries is a row
+data.frame(a=1:5, b=LETTERS[1:5])
+```
+
+Indexing
+========
+
+Indexing with Brackets
+----------------------
+
+You'll often need to refer to only part of an object, such as a single value in a vector, or a single row, column, or other portion of a data.frame. In R, you can use brackets [ ] after an object's name to select a _subset_ of the object (also called _indexing_):
+
+``` {r}
+avector <- c(3, 6, 9, 12, 15, 18, 21, 24, 27)  # Let's create a vector with 9 elements.
+avector # prints the whole object
+avector[4] # prints the fourth element of the vector
+avector[4:7] # prints the 4th through 7th elements of the vector
+avector[c(4,5,6,7)] # same as the above line
+avector[-3]  # drops the third element and prints the rest
+```
+
+For two dimensional objects like data.frames, you enter two numbers in the bracket: the first is the row (or rows) you want to select, and the second is the column(s):
+
+``` {r}
+# First, let's create a new data.frame
+mydata <- data.frame(id = 1:10,  # column named "id" with the numbers 1 through 10
+                     condition = rep(c("A", "B"), each=5),  # column with A and B repeating
+                     rt = rnorm(n = 10, mean = 100, sd = 20))  # randomly generated vector
+
+head(mydata)  # Let's print the head of the data for reference.
+
+mydata[1, 3]  # select a single cell in the first row, third column
+# You'll see from the printout of head(mydata) above that this is the reaction time for participant 1.
+
+mydata[3, ]  # leave one of the numbers blank if you want to select all columns for a given row
+
+mydata[, 3]  # or all rows for a given column (rt)
+mydata[, 'rt']  # also gets the rt column
+mydata['rt']  # if you don't use a comma, it assumes you want a column
+
+mydata[1:5, ]  # You can select multiple rows and/or columns. Here, we're selecting the first ten rows, all columns.
+
+mydata[c(1, 3, 5),]  # This will select the first, third, and fifth rows, all columns.
+```
+
+Note that you always need to include the comma when using brackets to subset a two-dimensional object like a data-frame. If you try mydata[1], you will get an error (because R doesn't know whether you're referring to the first row or column)
+
+Usually, your data will have column names (like ours: id, condition, & rt). There is a better way to select and manipulate entire columns of data by referring to the column name. In a data.frame, each column is a vector of values, and you can select that vector by calling the name of the data.frame followed by the $ symbol and then the column name:
+
+``` {r}
+mydata$rt
+mydata$condition
+```
+
+Because each column is a vector, you can use both the dollar sign notation and brackets to select a single value from a single column:
+
+``` {r}
+mydata$rt[10]
+# is the same as:
+mydata[10, 3]
+mydata[10, 'rt']
+
+```
+
+
+Conditional Indexing
+--------------------
+
+Sometimes, you need to _conditionally_ select part of an object - for example, you need only the rows where reaction time is greater than 100. You can use >, <, >=, <=, and == in brackets to do this:
+
+``` {r}
+mydata[mydata$rt > 120, ]  # Select rows of mydata where reaction time is greater than 120, all columns
+```
+
+How does this work? Let's see what's going on inside the brackets.
+
+``` {r}
+mydata$rt > 120
+```
+
+This returns a logical vector with 10 values (one for each row), where each value indicates whether each item in the vector mydata$rt is greater than 120. When we include this in the brackets before the comma, R will select only the rows where the statement is TRUE.
+
+
+Here are a few other examples of conditional indexing:
+
+``` {r}
+mydata[mydata$id <= 10,]
+mydata[mydata$condition == "A", ]
+```
+
+Notice that in the second example, we use the "double equals" sign to select the rows of mydata where condition is A. We use == instead of = for conditional formatting to differentiate it from other uses of the = sign. You could read this as "mydata where condition is equal to A".
+
+
+Boolean Operators & Conditional Indexing
+----------------------------------------
+
+Sometimes, you might need to use multiple conditions to select the data you want. For example, you might need all rows of mydata where reaction time is greater than 100, but less than 110. In R, you use the & symbol to combine conditions when both must be true.
+
+``` {r}
+mydata[mydata$rt > 100 & mydata$rt < 110, ]  # Select rows of mydata where reaction time is greater than 100 and less than 110, all columns
+```
+
+You should use the & symbol when both conditions must be TRUE in order to select the data you need.
+
+You might need to select part of an object depending on either one of two conditions. For example, you might need all rows of mydata where reaction time is less than 90 OR greater than 130. In R, you use the | (pronounced "or") symbol to combine conditions when either is true.
+
+``` {r}
+mydata[mydata$rt < 90 | mydata$rt > 130, ]  # Select rows of mydata where rt is less than 90 or greater than 130, all columns
+```
+
+
+When stringing together many & and | statements, you can use parentheses to control the order of operations. Suppose we need the data for only the first 10 participants with extreme reaction times (< 90 or > 130). We could try:
+
+``` {r}
+mydata[mydata$id <= 10 & mydata$rt < 90 | mydata$rt > 130, ]
+```
+
+Uh oh. We shouldn't have that fourth row, because they aren't one of the first ten participants. R includes that row because of the last OR statement (the reaction time is > 130). The correct way is:
+
+``` {r}
+mydata[mydata$id <= 10 & (mydata$rt < 90 | mydata$rt > 130), ]
+```
+
+The parentheses make sure that R evaluates the OR parts before the AND part.
+
+A Different Kind of R Function
+==============================
+
+The `with` and `transform` functions
+-------------------
+
+Up to this point, we've accessed columns of a data.frame using the `$` sign. 
+However, the with function allows us to refer to the columns directly.
+
+```{r}
+
+# add 100 to first five entries of rt column
+with(mydata, rt[1:5] + 100)   # add 1 to the rt column
+
+# same thing using dollar sign
+mydata$rt[1:5] + 100
+
+# note that it doesn't change mydata!
+mydata$rt[1:5]     # does not have 100 added to it
+```
+
+The `transform` function is similar, but let's you to copy a data.frame, and add or modify columns of data.
+
+```{r}
+newdata <- transform(mydata, high_rt = rt > 120)
+head(newdata)    # notice the added high_rt column
+with(newdata, rt[high_rt])    # we can refer to more than one column
+```
+
+
+The subset( ) function
+----------------------
+
+There are many other ways to subset your data in R, using functions instead of brackets. One alternative is the subset( ) function. The subset function takes at least 2 _arguments_, the things you include inside of the parentheses when calling a function. The first argument is the object to be subsetted, and the second is a logical expression indicating which elements or rows to keep.
+
+``` {r}
+subset(mydata, rt > 130) # This selects all rows of mydata where rt > 130
+```
+
+You can also indicate which columns you'd like to keep in the subset( ) function:
+
+``` {r}
+subset(mydata, rt > 130, c(condition, rt))  # select the condition and rt columns where rt > 130
+```
+
+You can be more explicit with the arguments if you'd like:
+
+``` {r}
+subset(x = mydata, subset = rt > 130, select = c(condition, rt)) # This is the same as the last example, but noting each argument explicitly
+```
+
+If you don't specify the arguments in this way, R will guess which code to pass to which argument.
+
+
+Summarizing Data
+================
+
+Now you know how to select different columns, rows, and cells of your data. Let's learn some new functions that will help you summarize your data. We'll focus on the reaction time data for our dataset.
+
+``` {r}
+mean(mydata$rt)  # Gives the mean (average) of RT
+sd(mydata$rt)  # Gives the standard deviation of RT
+median(mydata$rt)  # Gives the median value
+min(mydata$rt)  # Gives the minimum value
+max(mydata$rt)  # Gives the maximum value
+```
+
+<br/>
+
+table( ) is another useful function. It counts the frequency of each value in a vector. For example, if we wanted to check how many participants we had per condition:
+
+``` {r}
+table(mydata$condition)
+```
+

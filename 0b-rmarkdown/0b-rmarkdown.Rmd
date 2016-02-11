@@ -1,0 +1,104 @@
+---
+title: "Getting Started with Rmarkdown"
+output: html_document
+---
+
+How to style an Rmarkdown document (Header 1)
+=====================================================
+
+Header 2
+--------
+
+### Header 3
+
+Text
+----
+
+*italic*
+
+**bold**
+
+Lists
+-----
+
+* item 1
+* item 2
+    - subitem a
+    - subitem b
+
+1. first item
+2. another item
+    - subitem a
+    - subitem b
+    - new item
+
+Separating lines
+----------------
+These two markdown lines will be on the
+same line.
+
+Separate new lines by pressing enter twice.
+
+Images
+------
+
+![A cat](img/boat-cat.jpg)
+
+R Code Blocks
+-------------
+
+Show both code and outcome:
+
+```{r}
+
+1 + 1
+
+```
+
+Show only outcome:
+
+```{r, echo=FALSE}
+
+1 + 1
+
+```
+
+Don't run code: 
+
+```{r, eval=FALSE}
+1 + 1
+```
+
+You can make a figure wider: 
+
+```{r, fig.width=8, fig.height=4}
+plot(1:10)
+```
+
+
+Other styles you may not need
+============================
+
+$$ \sqrt{x} + \frac{y}{x} $$
+
+Dealing with Errors
+===================
+
+```
+  ```r
+  library(knitr)
+  opts_knit$set(error=TRUE)
+  ```
+```
+
+References and Cheatsheets
+==========================
+
+* [Rmarkdown homepage](http://rmarkdown.rstudio.com/)
+* [html document format](http://rmarkdown.rstudio.com/html_document_format.html)
+* [using code chunks](http://rmarkdown.rstudio.com/authoring_rcodechunks.html)
+
+**PDFs**
+
+* [cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+* [reference guide](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)

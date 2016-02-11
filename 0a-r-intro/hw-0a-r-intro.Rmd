@@ -1,0 +1,112 @@
+---
+title: "Basics of R homework"
+output: html_document
+---
+
+Main problems 
+-------------
+
+1. Create a vector named "zip" with 5 elements, each one a digit of Princeton's zip code (08544).
+
+``` {r}
+
+# Replace this comment with your code
+
+
+```
+
+2.  Check the class of "zip".
+
+``` {r}
+
+
+```
+
+3. Order of operations. Like a graphing calculator R performs arithmetic in a certain order. A common way to remember this order is PEMDAS: parentheses, exponent, multiplication, division, addition, subtraction. Using this, make the statements below all equal 1.
+
+```{r}
+
+1 + 2 / 3
+
+2 ^ 3 - 3
+
+3*2 / 9-3
+```
+
+4. Grab the first, third, and fifth elements of the vector below
+```{r}
+
+x <- 1:5
+
+# uncomment, and fill in line below
+# x[]
+
+```
+
+
+Exploring R functions
+---------------------
+
+### The `seq` function
+
+Based on the output of the code below, how would you generate 6 evenly spaced numbers, from 1 to 10.
+
+```{r}
+seq(1,5,2)
+seq(from=1, to=5, by=2)  # same as above
+seq(from=1, to=5, length.out=3)
+seq(from=1, to=5, length.out=2)
+# try it here
+
+```
+
+How would you do it using the other option (either the `by` or `length.out` argument)?
+
+```{r}
+
+
+
+```
+
+Note that `seq` can use arguments with decimals.
+```{r}
+seq(0, 1, by=.1)
+```
+
+
+### The `paste` and `rep` functions
+
+**One interesting function that uses the concept of recycling is `paste`.**
+
+```{r}
+# LETTERS is a variable that is built in to R
+LETTERS
+
+LETTERS[1:4]
+paste(LETTERS[1:4], 1:4)
+
+paste(LETTERS[1:4], 1:3)
+
+paste('the letter', LETTERS[1:4])
+
+# note that by default it sepeartes entries with a space
+# but you can specify a sep argument
+paste('this letter is', LETTERS[1:4], sep=": ")
+```
+
+**Another which is often useful in conjunction with `paste` is `rep`.**
+
+```{r}
+ltrs <- LETTERS[1:4]
+rep(ltrs, times=2)
+rep(ltrs, each=2)
+rep(ltrs, length.out=10)
+```
+
+How could you make the string counting up from 1 to 5 by .5 (that is, `1, 1.5, 2, ..., 5`), but label each number with it's whole part. For example, the first three entries should be: `"one: 1", "one: 1.5", "two: 2"`?
+
+```{r}
+
+# code here
+
+```
