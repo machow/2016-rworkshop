@@ -2,7 +2,10 @@
 title: "Basics of R"
 author: "Michael Chow"
 date: "February 10, 2016"
-output: html_document
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
 ---
 
 Arithmetic
@@ -15,7 +18,7 @@ Arithmetic
 
 5 / 2
 
-2^3
+2^4
 
 7 %% 2
 ```
@@ -27,6 +30,8 @@ Character Strings
 "I am a string of characters"
 
 'I am also a string of characters'
+
+" I'm a character with ' in it "
 ```
 
 
@@ -41,7 +46,6 @@ y <- 1 + x
 
 no_spaces_allowed_in_varnames <- "a character string"
 ```
-
 
 Functions
 ---------
@@ -65,6 +69,19 @@ e <- exp(1)
 log(100, base = e)
 log(100, base = 10)
 ```
+
+### In general, adding spaces doesn't matter!
+
+```{r}
+# right way
+min(3, 1)
+
+# wrong but works
+min(3,         1)
+min        (3,1)
+min(      3,1)
+```
+
 
 Vectors
 ------
@@ -137,6 +154,7 @@ ones + to_four
 
 ```{r}
 x <- 1:2
+ones <- rep(1, 4)
 
 ones
 x
@@ -173,3 +191,20 @@ newvec <- c(a=1, b=2, a=3)
 newvec['a']   # only gets first element named 'a'!
 ```
 
+Glossary
+========
+
+```{r, eval=FALSE}
+log
+exp
+min
+max
+paste
+seq
+rep
+c
+length
+class
+an_array[c(1,2)]
+an_array$varname
+```

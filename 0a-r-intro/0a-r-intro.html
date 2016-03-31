@@ -67,6 +67,18 @@ img {
 <h4 class="date"><em>February 10, 2016</em></h4>
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#arithmetic">Arithmetic</a></li>
+<li><a href="#character-strings">Character Strings</a></li>
+<li><a href="#variables">Variables</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#vectors">Vectors</a></li>
+<li><a href="#vector-arithmetic">Vector arithmetic</a></li>
+<li><a href="#basic-indexing">Basic Indexing</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ul>
+</div>
 
 <div id="arithmetic" class="section level2">
 <h2>Arithmetic</h2>
@@ -76,8 +88,8 @@ img {
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>5 / 2</code></pre>
 <pre><code>## [1] 2.5</code></pre>
-<pre class="r"><code>2^3</code></pre>
-<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>2^4</code></pre>
+<pre><code>## [1] 16</code></pre>
 <pre class="r"><code>7 %% 2</code></pre>
 <pre><code>## [1] 1</code></pre>
 </div>
@@ -87,6 +99,8 @@ img {
 <pre><code>## [1] &quot;I am a string of characters&quot;</code></pre>
 <pre class="r"><code>'I am also a string of characters'</code></pre>
 <pre><code>## [1] &quot;I am also a string of characters&quot;</code></pre>
+<pre class="r"><code>&quot; I'm a character with ' in it &quot;</code></pre>
+<pre><code>## [1] &quot; I'm a character with ' in it &quot;</code></pre>
 </div>
 <div id="variables" class="section level2">
 <h2>Variables</h2>
@@ -119,6 +133,19 @@ log(100, base = e)</code></pre>
 <pre><code>## [1] 4.60517</code></pre>
 <pre class="r"><code>log(100, base = 10)</code></pre>
 <pre><code>## [1] 2</code></pre>
+<div id="in-general-adding-spaces-doesnt-matter" class="section level3">
+<h3>In general, adding spaces doesn’t matter!</h3>
+<pre class="r"><code># right way
+min(3, 1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># wrong but works
+min(3,         1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>min        (3,1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>min(      3,1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
 </div>
 <div id="vectors" class="section level2">
 <h2>Vectors</h2>
@@ -185,6 +212,7 @@ length(ones)</code></pre>
 <div id="recycling" class="section level3">
 <h3>Recycling</h3>
 <pre class="r"><code>x &lt;- 1:2
+ones &lt;- rep(1, 4)
 
 ones</code></pre>
 <pre><code>## [1] 1 1 1 1</code></pre>
@@ -224,6 +252,21 @@ newvec &lt;- c(a=1, b=2, a=3)
 newvec['a']   # only gets first element named 'a'!</code></pre>
 <pre><code>## a 
 ## 1</code></pre>
+</div>
+<div id="glossary" class="section level1">
+<h1>Glossary</h1>
+<pre class="r"><code>log
+exp
+min
+max
+paste
+seq
+rep
+c
+length
+class
+an_array[c(1,2)]
+an_array$varname</code></pre>
 </div>
 
 

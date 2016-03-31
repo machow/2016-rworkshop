@@ -39,7 +39,6 @@ Main Problems
 
 ```
 
-<br/>
 
 6. Calculate the mean of the full "apple" column.
 

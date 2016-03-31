@@ -1,0 +1,57 @@
+---
+title: "download and process data"
+author: "Michael Chow"
+date: "March 30, 2016"
+output: html_document
+---
+
+Baby Names Homework
+===================
+
+Read in the file `baby-names.csv`
+---------------------------------
+
+```{r}
+
+
+```
+
+
+What are the top baby names?
+----------------------------------------------
+
+```{r}
+
+```
+
+In on command, how would you get the top 5 baby names for males only?
+-------------------------------------------------------------------
+
+```{r}
+
+
+```
+
+Plot the frequency for the name John across time (i.e. make time the x-axis)
+------------------------------------------------------------------------
+
+The data frame with only the name John should be 135 rows, so make sure it's the right size.
+
+```{r}
+
+```
+
+Plot the frequency of John and Margaret across time
+-------------------------------------------------------
+
+```{r}
+
+```
+
+Try exploring other interesting names and trends in the data!
+-----------------------------------------------------------------
+
+```{r}
+
+```
+

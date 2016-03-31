@@ -66,33 +66,40 @@ img {
 <div id="TOC">
 <ul>
 <li><a href="#classes-of-r-objects">Classes of R objects</a><ul>
-<li><a href="#the-list-another-class-of-r-object">The list, another class of R object</a></li>
-<li><a href="#data.frame-is-a-special-type-of-list">data.frame is a special type of list</a></li>
+<li><a href="#checking-the-class">Checking the class</a></li>
+<li><a href="#lists-another-class-of-r-object">Lists, another class of R object</a></li>
+<li><a href="#data.frame-a-special-type-of-list">data.frame, a special type of list</a></li>
 </ul></li>
 <li><a href="#indexing">Indexing</a><ul>
 <li><a href="#indexing-with-brackets">Indexing with Brackets</a></li>
+<li><a href="#indexing-with">Indexing with <code>$</code></a></li>
 <li><a href="#conditional-indexing">Conditional Indexing</a></li>
-<li><a href="#boolean-operators-conditional-indexing">Boolean Operators &amp; Conditional Indexing</a></li>
+<li><a href="#boolean-operators-conditional-indexing">Boolean Operators &amp; Conditional Indexing</a><ul>
+<li><a href="#use-the-symbol-when-both-conditions-must-be-true.">Use the <code>&amp;</code> symbol when both conditions must be TRUE.</a></li>
+<li><a href="#use-the-symbol-if-you-want-either-condition-to-be-true.">Use the <code>|</code> symbol if you want either condition to be TRUE.</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#a-different-kind-of-r-function">A Different Kind of R Function</a><ul>
 <li><a href="#the-with-and-transform-functions">The <code>with</code> and <code>transform</code> functions</a></li>
 <li><a href="#the-subset-function">The subset( ) function</a></li>
 </ul></li>
+<li><a href="#summarizing-data">Summarizing Data</a></li>
+<li><a href="#glossary">Glossary</a></li>
 </ul>
 </div>
 
 <div id="classes-of-r-objects" class="section level1">
 <h1>Classes of R objects</h1>
+<div id="checking-the-class" class="section level2">
+<h2>Checking the class</h2>
 <pre class="r"><code># This class is called &quot;numeric&quot;, and holds a number (that may have a decimal)
 class(1)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <pre class="r"><code># This class is called &quot;logical&quot;, and takes the value TRUE or FALSE
-alogical &lt;- TRUE  
-class(alogical)</code></pre>
+class(TRUE)</code></pre>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
 <pre class="r"><code># This class is called &quot;character&quot;, and holds strings of text
-acharacter &lt;- &quot;I am a character&quot;
-class(acharacter)</code></pre>
+class(&quot;a character&quot;)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code># This is a class called &quot;factor&quot;. It's like character, but when elements with the same text are grouped
 afactor &lt;- factor(&quot;A&quot;)
@@ -115,8 +122,9 @@ class(&quot;1&quot;)</code></pre>
 <p>Note that you can’t mix element types within a vector, or it will “coerce” some elements to ensure they are all the same class</p>
 <pre class="r"><code>c(1, 'a')    # 1 is made into a character</code></pre>
 <pre><code>## [1] &quot;1&quot; &quot;a&quot;</code></pre>
-<div id="the-list-another-class-of-r-object" class="section level2">
-<h2>The list, another class of R object</h2>
+</div>
+<div id="lists-another-class-of-r-object" class="section level2">
+<h2>Lists, another class of R object</h2>
 <p>Unlike a vector, a list can hold any object of any type. It is like a sequence of boxes. Each box can have a name.</p>
 <pre class="r"><code>vec1 &lt;- 1:3
 vec2 &lt;- 10:20
@@ -128,16 +136,20 @@ a_list</code></pre>
 ## 
 ## $b
 ##  [1] 10 11 12 13 14 15 16 17 18 19 20</code></pre>
-<pre class="r"><code># can use $ to select elements
-a_list$a</code></pre>
+<p>You can use $ to select elements</p>
+<pre class="r"><code>a_list$a</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
 <pre class="r"><code>a_list$b</code></pre>
 <pre><code>##  [1] 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code># other ways to index
+a_list$&quot;a&quot;</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
 </div>
-<div id="data.frame-is-a-special-type-of-list" class="section level2">
-<h2>data.frame is a special type of list</h2>
+<div id="data.frame-a-special-type-of-list" class="section level2">
+<h2>data.frame, a special type of list</h2>
+<p>The entries <code>a</code> and <code>b</code> below are referred to as columns. data.frames are useful because R has a lot of special functions to work with them. (We’ll cover some of these functions later).</p>
 <pre class="r"><code># note that a and b below are the columns of the data frame
-# each of their 10 entries is a row
+# each of their 5 entries is a row
 data.frame(a=1:5, b=LETTERS[1:5])</code></pre>
 <pre><code>##   a b
 ## 1 1 A
@@ -152,141 +164,150 @@ data.frame(a=1:5, b=LETTERS[1:5])</code></pre>
 <div id="indexing-with-brackets" class="section level2">
 <h2>Indexing with Brackets</h2>
 <p>You’ll often need to refer to only part of an object, such as a single value in a vector, or a single row, column, or other portion of a data.frame. In R, you can use brackets [ ] after an object’s name to select a <em>subset</em> of the object (also called <em>indexing</em>):</p>
-<pre class="r"><code>avector &lt;- c(3, 6, 9, 12, 15, 18, 21, 24, 27)  # Let's create a vector with 9 elements.
+<pre class="r"><code>avector &lt;- 1:9  # Let's create a vector with 9 elements.
 avector # prints the whole object</code></pre>
-<pre><code>## [1]  3  6  9 12 15 18 21 24 27</code></pre>
+<pre><code>## [1] 1 2 3 4 5 6 7 8 9</code></pre>
 <pre class="r"><code>avector[4] # prints the fourth element of the vector</code></pre>
-<pre><code>## [1] 12</code></pre>
+<pre><code>## [1] 4</code></pre>
 <pre class="r"><code>avector[4:7] # prints the 4th through 7th elements of the vector</code></pre>
-<pre><code>## [1] 12 15 18 21</code></pre>
+<pre><code>## [1] 4 5 6 7</code></pre>
 <pre class="r"><code>avector[c(4,5,6,7)] # same as the above line</code></pre>
-<pre><code>## [1] 12 15 18 21</code></pre>
+<pre><code>## [1] 4 5 6 7</code></pre>
 <pre class="r"><code>avector[-3]  # drops the third element and prints the rest</code></pre>
-<pre><code>## [1]  3  6 12 15 18 21 24 27</code></pre>
+<pre><code>## [1] 1 2 4 5 6 7 8 9</code></pre>
 <p>For two dimensional objects like data.frames, you enter two numbers in the bracket: the first is the row (or rows) you want to select, and the second is the column(s):</p>
 <pre class="r"><code># First, let's create a new data.frame
-mydata &lt;- data.frame(id = 1:10,  # column named &quot;id&quot; with the numbers 1 through 10
-                     condition = rep(c(&quot;A&quot;, &quot;B&quot;), each=5),  # column with A and B repeating
-                     rt = rnorm(n = 10, mean = 100, sd = 20))  # randomly generated vector
+mydata &lt;- data.frame(
+  id = 1:10,                              # column named &quot;id&quot; with the numbers 1 through 10
+  condition = rep(c(&quot;A&quot;, &quot;B&quot;), each=5),   # column with A and B repeating
+  rt = rnorm(n = 10, mean = 100, sd = 20) # randomly generated vector
+)
 
 head(mydata)  # Let's print the head of the data for reference.</code></pre>
+<pre><code>##   id condition        rt
+## 1  1         A 128.61074
+## 2  2         A  67.90795
+## 3  3         A  84.74123
+## 4  4         A 102.07948
+## 5  5         A  71.53853
+## 6  6         B  94.51522</code></pre>
+<pre class="r"><code>mydata[1, 3]  # select row 1, column 3</code></pre>
+<pre><code>## [1] 128.6107</code></pre>
+<pre class="r"><code>mydata[3, ]  # leave one of the numbers blank if you want to select all columns for a given row</code></pre>
 <pre><code>##   id condition       rt
-## 1  1         A 120.0850
-## 2  2         A 101.1981
-## 3  3         A 108.6554
-## 4  4         A 111.0325
-## 5  5         A 123.1186
-## 6  6         B 114.6061</code></pre>
-<pre class="r"><code>mydata[1, 3]  # select a single cell in the first row, third column</code></pre>
-<pre><code>## [1] 120.085</code></pre>
-<pre class="r"><code># You'll see from the printout of head(mydata) above that this is the reaction time for participant 1.
-
-mydata[3, ]  # leave one of the numbers blank if you want to select all columns for a given row</code></pre>
-<pre><code>##   id condition       rt
-## 3  3         A 108.6554</code></pre>
+## 3  3         A 84.74123</code></pre>
 <pre class="r"><code>mydata[, 3]  # or all rows for a given column (rt)</code></pre>
-<pre><code>##  [1] 120.08501 101.19811 108.65542 111.03253 123.11857 114.60611  79.26593
-##  [8] 106.17810 113.41608 104.81653</code></pre>
+<pre><code>##  [1] 128.61074  67.90795  84.74123 102.07948  71.53853  94.51522  95.49180
+##  [8]  94.95862  84.72640  56.30878</code></pre>
 <pre class="r"><code>mydata[, 'rt']  # also gets the rt column</code></pre>
-<pre><code>##  [1] 120.08501 101.19811 108.65542 111.03253 123.11857 114.60611  79.26593
-##  [8] 106.17810 113.41608 104.81653</code></pre>
+<pre><code>##  [1] 128.61074  67.90795  84.74123 102.07948  71.53853  94.51522  95.49180
+##  [8]  94.95862  84.72640  56.30878</code></pre>
 <pre class="r"><code>mydata['rt']  # if you don't use a comma, it assumes you want a column</code></pre>
 <pre><code>##           rt
-## 1  120.08501
-## 2  101.19811
-## 3  108.65542
-## 4  111.03253
-## 5  123.11857
-## 6  114.60611
-## 7   79.26593
-## 8  106.17810
-## 9  113.41608
-## 10 104.81653</code></pre>
+## 1  128.61074
+## 2   67.90795
+## 3   84.74123
+## 4  102.07948
+## 5   71.53853
+## 6   94.51522
+## 7   95.49180
+## 8   94.95862
+## 9   84.72640
+## 10  56.30878</code></pre>
 <pre class="r"><code>mydata[1:5, ]  # You can select multiple rows and/or columns. Here, we're selecting the first ten rows, all columns.</code></pre>
-<pre><code>##   id condition       rt
-## 1  1         A 120.0850
-## 2  2         A 101.1981
-## 3  3         A 108.6554
-## 4  4         A 111.0325
-## 5  5         A 123.1186</code></pre>
+<pre><code>##   id condition        rt
+## 1  1         A 128.61074
+## 2  2         A  67.90795
+## 3  3         A  84.74123
+## 4  4         A 102.07948
+## 5  5         A  71.53853</code></pre>
 <pre class="r"><code>mydata[c(1, 3, 5),]  # This will select the first, third, and fifth rows, all columns.</code></pre>
-<pre><code>##   id condition       rt
-## 1  1         A 120.0850
-## 3  3         A 108.6554
-## 5  5         A 123.1186</code></pre>
-<p>Note that you always need to include the comma when using brackets to subset a two-dimensional object like a data-frame. If you try mydata[1], you will get an error (because R doesn’t know whether you’re referring to the first row or column)</p>
-<p>Usually, your data will have column names (like ours: id, condition, &amp; rt). There is a better way to select and manipulate entire columns of data by referring to the column name. In a data.frame, each column is a vector of values, and you can select that vector by calling the name of the data.frame followed by the $ symbol and then the column name:</p>
+<pre><code>##   id condition        rt
+## 1  1         A 128.61074
+## 3  3         A  84.74123
+## 5  5         A  71.53853</code></pre>
+</div>
+<div id="indexing-with" class="section level2">
+<h2>Indexing with <code>$</code></h2>
+<p>Like in a list, you can also use a dollar sign to get a specific column.</p>
 <pre class="r"><code>mydata$rt</code></pre>
-<pre><code>##  [1] 120.08501 101.19811 108.65542 111.03253 123.11857 114.60611  79.26593
-##  [8] 106.17810 113.41608 104.81653</code></pre>
+<pre><code>##  [1] 128.61074  67.90795  84.74123 102.07948  71.53853  94.51522  95.49180
+##  [8]  94.95862  84.72640  56.30878</code></pre>
 <pre class="r"><code>mydata$condition</code></pre>
 <pre><code>##  [1] A A A A A B B B B B
 ## Levels: A B</code></pre>
 <p>Because each column is a vector, you can use both the dollar sign notation and brackets to select a single value from a single column:</p>
 <pre class="r"><code>mydata$rt[10]</code></pre>
-<pre><code>## [1] 104.8165</code></pre>
+<pre><code>## [1] 56.30878</code></pre>
 <pre class="r"><code># is the same as:
 mydata[10, 3]</code></pre>
-<pre><code>## [1] 104.8165</code></pre>
+<pre><code>## [1] 56.30878</code></pre>
 <pre class="r"><code>mydata[10, 'rt']</code></pre>
-<pre><code>## [1] 104.8165</code></pre>
+<pre><code>## [1] 56.30878</code></pre>
 </div>
 <div id="conditional-indexing" class="section level2">
 <h2>Conditional Indexing</h2>
-<p>Sometimes, you need to <em>conditionally</em> select part of an object - for example, you need only the rows where reaction time is greater than 100. You can use &gt;, &lt;, &gt;=, &lt;=, and == in brackets to do this:</p>
-<pre class="r"><code>mydata[mydata$rt &gt; 120, ]  # Select rows of mydata where reaction time is greater than 120, all columns</code></pre>
+<p>Sometimes, you need to <em>conditionally</em> select part of an object. For example, you need only the rows where reaction time is greater than 100. You can use &gt;, &lt;, &gt;=, &lt;=, and == in brackets to do this:</p>
+<pre class="r"><code># Select rows of mydata where reaction time is greater than 120, all columns
+mydata[mydata$rt &gt; 120, ]</code></pre>
 <pre><code>##   id condition       rt
-## 1  1         A 120.0850
-## 5  5         A 123.1186</code></pre>
+## 1  1         A 128.6107</code></pre>
 <p>How does this work? Let’s see what’s going on inside the brackets.</p>
 <pre class="r"><code>mydata$rt &gt; 120</code></pre>
-<pre><code>##  [1]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code>##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <p>This returns a logical vector with 10 values (one for each row), where each value indicates whether each item in the vector mydata$rt is greater than 120. When we include this in the brackets before the comma, R will select only the rows where the statement is TRUE.</p>
 <p>Here are a few other examples of conditional indexing:</p>
-<pre class="r"><code>mydata[mydata$id &lt;= 10,]</code></pre>
-<pre><code>##    id condition        rt
-## 1   1         A 120.08501
-## 2   2         A 101.19811
-## 3   3         A 108.65542
-## 4   4         A 111.03253
-## 5   5         A 123.11857
-## 6   6         B 114.60611
-## 7   7         B  79.26593
-## 8   8         B 106.17810
-## 9   9         B 113.41608
-## 10 10         B 104.81653</code></pre>
+<pre class="r"><code>mydata[mydata$id &lt;= 3,]   # when id is less than, or equal to 3</code></pre>
+<pre><code>##   id condition        rt
+## 1  1         A 128.61074
+## 2  2         A  67.90795
+## 3  3         A  84.74123</code></pre>
 <pre class="r"><code>mydata[mydata$condition == &quot;A&quot;, ]</code></pre>
-<pre><code>##   id condition       rt
-## 1  1         A 120.0850
-## 2  2         A 101.1981
-## 3  3         A 108.6554
-## 4  4         A 111.0325
-## 5  5         A 123.1186</code></pre>
+<pre><code>##   id condition        rt
+## 1  1         A 128.61074
+## 2  2         A  67.90795
+## 3  3         A  84.74123
+## 4  4         A 102.07948
+## 5  5         A  71.53853</code></pre>
 <p>Notice that in the second example, we use the “double equals” sign to select the rows of mydata where condition is A. We use == instead of = for conditional formatting to differentiate it from other uses of the = sign. You could read this as “mydata where condition is equal to A”.</p>
 </div>
 <div id="boolean-operators-conditional-indexing" class="section level2">
 <h2>Boolean Operators &amp; Conditional Indexing</h2>
-<p>Sometimes, you might need to use multiple conditions to select the data you want. For example, you might need all rows of mydata where reaction time is greater than 100, but less than 110. In R, you use the &amp; symbol to combine conditions when both must be true.</p>
-<pre class="r"><code>mydata[mydata$rt &gt; 100 &amp; mydata$rt &lt; 110, ]  # Select rows of mydata where reaction time is greater than 100 and less than 110, all columns</code></pre>
+<div id="use-the-symbol-when-both-conditions-must-be-true." class="section level3">
+<h3>Use the <code>&amp;</code> symbol when both conditions must be TRUE.</h3>
+<p>Select all rows where <code>rt</code> is greater than 100, but less than 110.</p>
+<pre class="r"><code>mydata[mydata$rt &gt; 100 &amp; mydata$rt &lt; 110, ] </code></pre>
+<pre><code>##   id condition       rt
+## 4  4         A 102.0795</code></pre>
+</div>
+<div id="use-the-symbol-if-you-want-either-condition-to-be-true." class="section level3">
+<h3>Use the <code>|</code> symbol if you want either condition to be TRUE.</h3>
+<p>Select all rows where <code>rt</code> is less than 90 OR greater than 130.</p>
+<pre class="r"><code>mydata[mydata$rt &lt; 90 | mydata$rt &gt; 130, ]</code></pre>
 <pre><code>##    id condition       rt
-## 2   2         A 101.1981
-## 3   3         A 108.6554
-## 8   8         B 106.1781
-## 10 10         B 104.8165</code></pre>
-<p>You should use the &amp; symbol when both conditions must be TRUE in order to select the data you need.</p>
-<p>You might need to select part of an object depending on either one of two conditions. For example, you might need all rows of mydata where reaction time is less than 90 OR greater than 130. In R, you use the | (pronounced “or”) symbol to combine conditions when either is true.</p>
-<pre class="r"><code>mydata[mydata$rt &lt; 90 | mydata$rt &gt; 130, ]  # Select rows of mydata where rt is less than 90 or greater than 130, all columns</code></pre>
-<pre><code>##   id condition       rt
-## 7  7         B 79.26593</code></pre>
-<p>When stringing together many &amp; and | statements, you can use parentheses to control the order of operations. Suppose we need the data for only the first 10 participants with extreme reaction times (&lt; 90 or &gt; 130). We could try:</p>
+## 2   2         A 67.90795
+## 3   3         A 84.74123
+## 5   5         A 71.53853
+## 9   9         B 84.72640
+## 10 10         B 56.30878</code></pre>
+<p>You can use parentheses to control the order of operations. Suppose we need the data for only the first 10 participants with extreme reaction times (&lt; 90 or &gt; 130). We could try:</p>
 <pre class="r"><code>mydata[mydata$id &lt;= 10 &amp; mydata$rt &lt; 90 | mydata$rt &gt; 130, ]</code></pre>
-<pre><code>##   id condition       rt
-## 7  7         B 79.26593</code></pre>
+<pre><code>##    id condition       rt
+## 2   2         A 67.90795
+## 3   3         A 84.74123
+## 5   5         A 71.53853
+## 9   9         B 84.72640
+## 10 10         B 56.30878</code></pre>
 <p>Uh oh. We shouldn’t have that fourth row, because they aren’t one of the first ten participants. R includes that row because of the last OR statement (the reaction time is &gt; 130). The correct way is:</p>
 <pre class="r"><code>mydata[mydata$id &lt;= 10 &amp; (mydata$rt &lt; 90 | mydata$rt &gt; 130), ]</code></pre>
-<pre><code>##   id condition       rt
-## 7  7         B 79.26593</code></pre>
+<pre><code>##    id condition       rt
+## 2   2         A 67.90795
+## 3   3         A 84.74123
+## 5   5         A 71.53853
+## 9   9         B 84.72640
+## 10 10         B 56.30878</code></pre>
 <p>The parentheses make sure that R evaluates the OR parts before the AND part.</p>
+</div>
 </div>
 </div>
 <div id="a-different-kind-of-r-function" class="section level1">
@@ -296,25 +317,25 @@ mydata[10, 3]</code></pre>
 <p>Up to this point, we’ve accessed columns of a data.frame using the <code>$</code> sign. However, the with function allows us to refer to the columns directly.</p>
 <pre class="r"><code># add 100 to first five entries of rt column
 with(mydata, rt[1:5] + 100)   # add 1 to the rt column</code></pre>
-<pre><code>## [1] 220.0850 201.1981 208.6554 211.0325 223.1186</code></pre>
+<pre><code>## [1] 228.6107 167.9080 184.7412 202.0795 171.5385</code></pre>
 <pre class="r"><code># same thing using dollar sign
 mydata$rt[1:5] + 100</code></pre>
-<pre><code>## [1] 220.0850 201.1981 208.6554 211.0325 223.1186</code></pre>
+<pre><code>## [1] 228.6107 167.9080 184.7412 202.0795 171.5385</code></pre>
 <pre class="r"><code># note that it doesn't change mydata!
 mydata$rt[1:5]     # does not have 100 added to it</code></pre>
-<pre><code>## [1] 120.0850 101.1981 108.6554 111.0325 123.1186</code></pre>
+<pre><code>## [1] 128.61074  67.90795  84.74123 102.07948  71.53853</code></pre>
 <p>The <code>transform</code> function is similar, but let’s you to copy a data.frame, and add or modify columns of data.</p>
 <pre class="r"><code>newdata &lt;- transform(mydata, high_rt = rt &gt; 120)
 head(newdata)    # notice the added high_rt column</code></pre>
-<pre><code>##   id condition       rt high_rt
-## 1  1         A 120.0850    TRUE
-## 2  2         A 101.1981   FALSE
-## 3  3         A 108.6554   FALSE
-## 4  4         A 111.0325   FALSE
-## 5  5         A 123.1186    TRUE
-## 6  6         B 114.6061   FALSE</code></pre>
+<pre><code>##   id condition        rt high_rt
+## 1  1         A 128.61074    TRUE
+## 2  2         A  67.90795   FALSE
+## 3  3         A  84.74123   FALSE
+## 4  4         A 102.07948   FALSE
+## 5  5         A  71.53853   FALSE
+## 6  6         B  94.51522   FALSE</code></pre>
 <pre class="r"><code>with(newdata, rt[high_rt])    # we can refer to more than one column</code></pre>
-<pre><code>## [1] 120.0850 123.1186</code></pre>
+<pre><code>## [1] 128.6107</code></pre>
 </div>
 <div id="the-subset-function" class="section level2">
 <h2>The subset( ) function</h2>
@@ -323,15 +344,69 @@ head(newdata)    # notice the added high_rt column</code></pre>
 <pre><code>## [1] id        condition rt       
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <p>You can also indicate which columns you’d like to keep in the subset( ) function:</p>
-<pre class="r"><code>subset(mydata, rt &gt; 130, c(condition, rt))  # select the condition and rt columns where rt &gt; 130</code></pre>
+<pre class="r"><code># select the condition and rt columns where rt &gt; 130
+subset(mydata, rt &gt; 130, c(&quot;condition&quot;, &quot;rt&quot;))</code></pre>
 <pre><code>## [1] condition rt       
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <p>You can be more explicit with the arguments if you’d like:</p>
-<pre class="r"><code>subset(x = mydata, subset = rt &gt; 130, select = c(condition, rt)) # This is the same as the last example, but noting each argument explicitly</code></pre>
+<pre class="r"><code># This is the same as the last example, but noting each argument explicitly
+subset(x = mydata, subset = rt &gt; 130, select = c(&quot;condition&quot;, &quot;rt&quot;))</code></pre>
 <pre><code>## [1] condition rt       
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <p>If you don’t specify the arguments in this way, R will guess which code to pass to which argument.</p>
 </div>
+</div>
+<div id="summarizing-data" class="section level1">
+<h1>Summarizing Data</h1>
+<p>Now you know how to select different columns, rows, and cells of your data. Let’s learn some new functions that will help you summarize your data. We’ll focus on the reaction time data for our dataset.</p>
+<pre class="r"><code>mean(mydata$rt)  # Gives the mean (average) of RT</code></pre>
+<pre><code>## [1] 88.08787</code></pre>
+<pre class="r"><code>sd(mydata$rt)  # Gives the standard deviation of RT</code></pre>
+<pre><code>## [1] 20.26141</code></pre>
+<pre class="r"><code>median(mydata$rt)  # Gives the median value</code></pre>
+<pre><code>## [1] 89.62822</code></pre>
+<pre class="r"><code>min(mydata$rt)  # Gives the minimum value</code></pre>
+<pre><code>## [1] 56.30878</code></pre>
+<pre class="r"><code>max(mydata$rt)  # Gives the maximum value</code></pre>
+<pre><code>## [1] 128.6107</code></pre>
+<p><br /></p>
+<p>table( ) is another useful function. It counts the frequency of each value in a vector. For example, if we wanted to check how many participants we had per condition:</p>
+<pre class="r"><code>table(mydata$condition)</code></pre>
+<pre><code>## 
+## A B 
+## 5 5</code></pre>
+</div>
+<div id="glossary" class="section level1">
+<h1>Glossary</h1>
+<pre class="r"><code>class
+as.numeric
+factor
+list
+data.frame
+avector[3:5]
+avector[-3]
+avector[c(4,5,6)]
+
+mydata[1, 3]
+mydata[3, ]
+mydata[, 1]
+mydata[1:5]
+
+mydata[, 'rt']
+mydata['rt']
+mydata$rt
+
+mydata[mydata$rt &gt; 120,]
+mydata[mydata$id &lt;= 3, ]
+mydata[mydata$condition == &quot;A&quot;, ]
+
+subset(mydata, rt &gt; 100 &amp; rt &lt; 110)
+subset(mydata, rt &lt; 90 | rt &gt; 130)
+
+(1 &gt; 2) | (3 &gt; 2)
+
+with(mydata, rt + 100)
+transform(mydata, high_rt = rt &gt; 120)</code></pre>
 </div>
 
 
