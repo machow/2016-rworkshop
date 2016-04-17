@@ -1,0 +1,49 @@
+---
+title: "Working Memory Training Data"
+output: html_document
+---
+
+---
+title: "t-tests and anova"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = "", error=FALSE)
+```
+
+Background
+==========
+
+This simulated data is based off of training study run by David Moreau.
+In this study, he examined which of the following programs would be better for improving spatial memory:
+
+1. Aerobic exercise (`aer`) -- basically running on a treadmill.
+2. Working memory training (`wm`) -- memorizing locations while doing a distracting task on the computer.
+3. Something he called Designed Sport Training (`combo`), meant to combine spatial memory with consistent exercise.
+
+As shown in the diagram below, participants were tested on their spatial memory, then assigned to a program for a month. Afterward, their spatial memory was tested again.
+![Sport training](img/sport-training.png)
+
+```{r}
+wm_dat <- read.csv('training_long.csv')
+```
+
+The working memory data set has `r nrow(wm_dat)` rows and `r ncol(wm_dat)` columns. 
+Below are the first 5 rows.
+
+```{r}
+head(wm_dat, 5)
+```
+
+Note that the `session`, `cond`, and `time` columns are factors.
+
+```{r}
+str(wm_dat)
+```
+
+The levels of each factor are..
+
+* **session**: `r levels(wm_dat$session)`
+* **cond**: `r levels(wm_dat$cond)`
+* **time**: `r levels(wm_dat$time)`
