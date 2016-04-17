@@ -47,3 +47,46 @@ The levels of each factor are..
 * **session**: `r levels(wm_dat$session)`
 * **cond**: `r levels(wm_dat$cond)`
 * **time**: `r levels(wm_dat$time)`
+
+Questions
+=========
+
+1. Using the `table` function, count the number of subjects in each combination of condition and time, using the `cond` and `time` columns.
+
+```{r}
+
+```
+
+2. Make a plot for each combination of condition and time (e.g. cond is "wm" and time is "pre"). There are 6 combinations total (3 conditions x 2 times). Be sure to give it useful labels.
+
+```{r}
+
+```
+
+3. Do a t-test of pre- vs post-test (i.e. `time`). What are the results? (We will ignore the fact that each person was tested at each time for now.)
+
+```{r}
+
+```
+
+4. Conduct a one-way ANOVA of condition for the pre-test group.
+
+```{r}
+
+```
+
+5. Conduct a two-way ANOVA of `cond`ition by `time`.
+
+```{r}
+
+```
+
+Optional
+===========
+
+1. Notice that each subject has a pre- and post- test score. How would you make a scatterplot of each person's pre-test score against their post-test score?
+
+```{r}
+
+```
+
