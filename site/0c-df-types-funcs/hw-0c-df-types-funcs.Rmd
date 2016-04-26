@@ -1,0 +1,82 @@
+---
+title: "Indexing and Summarizing Data - Homework "
+output: html_document
+---
+
+Main Problems
+-------------
+
+1. Create a vector named "odd" with all odd numbers from 1 - 13.
+
+``` {r}
+
+```
+
+
+2. Select the third element and raise it to the 5th power.
+
+``` {r}
+
+```
+
+
+3. Create another vector named "even" with all even numbers from 2 - 14.
+
+``` {r}
+
+```
+
+
+4. Create a data.frame named "numbers" with two columns: one named "apple" that contains your vector of odd numbers, and one named "orange" that contains your vector of even numbers.
+
+``` {r}
+
+```
+
+5. Select all rows where "orange" is greater than 7.
+
+``` {r}
+
+```
+
+
+6. Calculate the mean of the full "apple" column.
+
+``` {r}
+
+```
+
+7. Without using the `$`, create a third column called `total` that is apples plus oranges
+
+```{r}
+
+```
+
+### Recycling
+
+The following might exhibit some surprising behavior, due to something called recycling..
+
+```{r, error=TRUE}
+x <- 1:4
+x[c(TRUE, FALSE, FALSE, FALSE)]
+x[c(TRUE, TRUE, TRUE, TRUE)]
+x[TRUE]
+x[c(TRUE, FALSE)]
+x[c(TRUE, FALSE, FALSE)]
+```
+
+The data.frame function might offer some hints..
+
+```{r}
+data.frame(x = x, indx = c(TRUE, FALSE))
+```
+
+How can you get every 3 letters in the vector below (that is, `A, D, ..., Y`) using the fewest number of TRUE or FALSE possible. 
+Note that the `LETTERS` variable is built in to R, and is a vector with A to Z.
+
+```{r}
+LETTERS[1:10]
+# modify line below
+LETTERS[c(TRUE)]
+
+```

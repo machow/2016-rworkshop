@@ -1,0 +1,393 @@
+---
+title: "data.frame, types, and more on functions"
+output: 
+  revealjs::revealjs_presentation:
+    theme: simple
+    transition: slide
+    center: true
+    highlight: null
+    includes:
+      before_body: ../.style/prefix.html
+---
+
+```{r, echo=FALSE}
+
+library(knitr)
+opts_chunk$set(comment="")
+
+```
+
+
+Classes of R objects
+====================
+
+Common Classes
+------------------
+
+``` {r}
+class(1)      
+class(integer(0))
+
+class(TRUE)
+
+class("a character")
+```
+
+Converting from one to another
+--------------------------------
+
+We can convert one class to another using `as.CLASSNAME` functions
+
+```{r}
+as.character(1)
+as.integer(FALSE)
+as.logical(0)
+```
+
+Note that you can't mix element types within a vector. It will make them all the same class.
+
+```{r}
+c(1, 'a')    # 1 is made into a character
+```
+
+
+Factors
+-------
+
+Factors are like character, but group together the same elements into "levels"
+
+```{r}
+afactor <- factor("A")
+class(afactor)
+
+levels(afactor)
+```
+
+Oftentimes, it's better just to use characters instead
+
+```{r}
+as.character(afactor)
+```
+
+
+
+Lists, another class of R object
+-----------------------------------
+
+Unlike a vector, a list can hold any object of any type.
+It is like a sequence of boxes. Each box can have a name.
+
+```{r}
+vec1 <- 1:3
+vec2 <- 10:20
+
+a_list <- list(a = vec1, b = vec2)
+a_list
+```
+
+You can use $ to select elements
+```{r}
+a_list$a
+```
+
+data.frame, a special type of list
+------------------------------------
+
+The entries `a` and `b` below are referred to as columns.
+data.frames are useful because R has a lot of special functions to work with them.
+(We'll cover some of these functions later).
+
+```{r}
+dat <- data.frame(a=1:5, b=LETTERS[1:5])
+```
+
+We can get a column using the dollar sign
+
+```{r}
+dat$a
+```
+
+
+Indexing
+========
+
+You'll often need to refer to only part of an object. For example,
+
+* get some values in a vector
+* get some rows and columns from a data.frame. 
+
+We can use either the blocks `[ ]` or dollar sign `$`
+
+Indexing a vector with `[ ]`
+----------------------
+
+Use blocks (`[ ]`) after an object's name to get some of its entries.
+
+``` {r}
+avector <- 1:9  # Let's create a vector with 9 elements.
+avector[4]
+avector[4:7]
+avector[c(4,5,6,7)]
+avector[-3]
+```
+
+Indexing a `data.frame`
+----------------------------------
+
+For data.frames, you index using `[row, col]` numbers.
+
+``` {r}
+dat <- data.frame(id = 1:3, outcome=c('A', 'B', 'C'))
+dat  # Let's print the head of the data for reference.
+
+dat[1, 2]  # select row 1, column 3
+
+dat[3, ]   # left col blank, so gets all columns
+```
+
+Indexing a `data.frame` (cont)
+------------------------------
+
+```{r}
+dat[, 'outcome']  # also gets the rt column
+dat['outcome']  # if you don't use a comma, it assumes you want a column
+
+dat[1:3,]  # select multiple rows
+```
+
+```{r, eval=FALSE}
+dat[c(1,2,3),] # same as above
+```
+
+
+Indexing with `$`
+-----------------
+
+Like in a list, you can also use a dollar sign to get a specific column.
+
+``` {r}
+dat$id
+```
+
+Each column is a vector, so you can do...
+
+``` {r}
+dat$id[2]
+dat[2, 1]      # same as above
+```
+```{r, eval=FALSE}
+dat[2, 'id']   # same!
+```
+
+
+Conditional Indexing
+====================
+
+Sometimes, you need to _conditionally_ select part of an object. For example, you need only the rows where reaction time is greater than 100. 
+
+You can use >, <, >=, <=, and == in brackets to do this.
+
+``` {r}
+# First, let's create a new data.frame
+mydata <- data.frame(
+  id = 1:10,                              # column named "id" with the numbers 1 through 10
+  condition = rep(c("A", "B"), each=5),   # column with A and B repeating
+  rt = rnorm(n = 10, mean = 100, sd = 20) # randomly generated vector
+)
+
+# Select rows of mydata where reaction time is greater than 120, all columns
+mydata[mydata$rt > 120, ]
+```
+
+How it works
+------------
+
+How does this work? Let's see what's going on inside the brackets.
+
+``` {r}
+mydata$rt > 120
+```
+
+This returns a logical vector with 10 values (one for each row), where each value indicates whether each item in the vector mydata$rt is greater than 120. When we include this in the brackets before the comma, R will select only the rows where the statement is TRUE.
+
+More examples
+--------------
+
+Here are a few other examples of conditional indexing:
+
+``` {r}
+mydata[mydata$id <= 3,]   # when id is less than, or equal to 3
+mydata[mydata$condition == "A", ]
+```
+
+*important*: We use the "double equals" sign (`==`) to select the rows of mydata where condition is A. 
+
+Use the `&` symbol when both conditions must be TRUE.
+----------------------------------------
+
+Select all rows where `rt` is greater than 100, but less than 110.
+
+``` {r}
+
+mydata[mydata$rt > 100 & mydata$rt < 110, ] 
+```
+
+Use the `|` symbol if you want either condition to be TRUE. 
+-----------------------------------------------------------
+
+Select all rows where `rt` is less than 90 OR greater than 130.
+
+``` {r}
+mydata[mydata$rt < 90 | mydata$rt > 130, ]
+```
+
+Parenthesis to control order
+----------------------------
+
+You can use parentheses to control the order of operations. Suppose we need the data for only the first 10 participants with extreme reaction times (< 90 or > 130). We could try:
+
+``` {r}
+mydata[mydata$id <= 10 & mydata$rt < 90 | mydata$rt > 130, ]
+```
+
+However, we need to group the two OR parts together..
+
+``` {r}
+mydata[mydata$id <= 10 & (mydata$rt < 90 | mydata$rt > 130), ]
+```
+
+Reading Data
+============
+
+CSV files
+---------
+
+These are special files where commas separate each entry.
+
+```{r}
+read.csv('example_dat.csv')
+```
+
+A Different Kind of R Function
+==============================
+
+The `with` function
+-------------------------------------
+
+Up to this point, we've accessed columns of a data.frame using the `$` sign. 
+However, the with function allows us to refer to the columns directly.
+
+```{r}
+
+# add 100 to first five entries of rt column
+with(mydata, rt[1:5] + 100)   # add 1 to the rt column
+
+# same thing using dollar sign
+mydata$rt[1:5] + 100
+
+# note that it doesn't change mydata!
+mydata$rt[1:5]     # does not have 100 added to it
+```
+
+The transform function
+----------------------
+
+The `transform` function is similar, but let's you to copy a data.frame, and add or modify columns of data.
+
+```{r}
+newdata <- transform(mydata, high_rt = rt > 120)
+head(newdata)    # notice the added high_rt column
+with(newdata, rt[high_rt])    # we can refer to more than one column
+```
+
+
+The subset( ) function
+----------------------
+
+There are many other ways to subset your data in R, using functions instead of brackets. One alternative is the subset( ) function. The subset function takes at least 2 _arguments_, the things you include inside of the parentheses when calling a function. The first argument is the object to be subsetted, and the second is a logical expression indicating which elements or rows to keep.
+
+``` {r}
+subset(mydata, rt > 130) # This selects all rows of mydata where rt > 130
+```
+
+More `subset`
+-------------
+
+You can also indicate which columns you'd like to keep in the subset( ) function:
+
+``` {r}
+# select the condition and rt columns where rt > 130
+subset(mydata, rt > 130, c("condition", "rt"))
+```
+
+You can be more explicit with the arguments if you'd like:
+
+``` {r}
+# This is the same as the last example, but noting each argument explicitly
+subset(x = mydata, subset = rt > 130, select = c("condition", "rt"))
+```
+
+If you don't specify the arguments in this way, R will guess which code to pass to which argument.
+
+
+Summarizing Data
+================
+
+Different summary functions
+---------------------------
+
+Now you know how to select different columns, rows, and cells of your data. Let's learn some new functions that will help you summarize your data. We'll focus on the reaction time data for our dataset.
+
+``` {r}
+mean(mydata$rt)  # Gives the mean (average) of RT
+sd(mydata$rt)  # Gives the standard deviation of RT
+median(mydata$rt)  # Gives the median value
+min(mydata$rt)  # Gives the minimum value
+max(mydata$rt)  # Gives the maximum value
+```
+
+`table` function
+---------------
+
+table( ) is another useful function. It counts the frequency of each value in a vector. For example, if we wanted to check how many participants we had per condition:
+
+``` {r}
+table(mydata$condition)
+```
+
+Glossary
+========
+
+```{r, eval=FALSE}
+class
+as.numeric
+factor
+list
+data.frame
+avector[3:5]
+avector[-3]
+avector[c(4,5,6)]
+
+mydata[1, 3]
+mydata[3, ]
+mydata[, 1]
+mydata[1:5]
+
+mydata[, 'rt']
+mydata['rt']
+mydata$rt
+
+mydata[mydata$rt > 120,]
+mydata[mydata$id <= 3, ]
+mydata[mydata$condition == "A", ]
+
+subset(mydata, rt > 100 & rt < 110)
+subset(mydata, rt < 90 | rt > 130)
+
+(1 > 2) | (3 > 2)
+
+with(mydata, rt + 100)
+transform(mydata, high_rt = rt > 120)
+
+```
+

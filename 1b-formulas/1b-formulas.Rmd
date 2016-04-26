@@ -1,0 +1,148 @@
+---
+title: "Formulas"
+output:
+  revealjs::revealjs_presentation:
+    theme: simple
+    transition: slide
+    center: true
+    highlight: null
+    includes:
+      before_body: ../.style/prefix.html
+---
+
+```{r, echo=FALSE}
+
+library(knitr)
+opts_chunk$set(comment="",  warning=FALSE)
+
+```
+
+R Formulas
+==========
+
+What is a formula?
+------------------
+
+Formulas in R are created using the `~` character. The formula `A ~ B` is best read as "A by B".
+
+The formula `A ~ B + C` can be read as "A by B **and C**".
+This is well illustrated by the `boxplot` function.
+
+Example of `A ~ B` using Boxplot
+---------------------
+
+ToothGrowth: **len**gth of teeth in guinea pigs, based on different **supp**lements, and **dose**s.
+
+```{r}
+boxplot(len ~ supp, data=ToothGrowth)
+```
+
+`A ~ B + C` w/ Boxplot
+------------------------------------
+
+```{r, fig.height=4.5}
+boxplot(len ~ supp + dose, data=ToothGrowth)
+```
+
+
+What is the `data` argument?
+=============================
+
+Refresher, getting a column of data
+------------------------------------
+
+```{r}
+small_tooth = ToothGrowth[1:5,]   # first 5 rows
+small_tooth$len < 6
+with(small_tooth, len < 6)
+```
+
+ The `data` argument
+-----------------------------
+
+```{r, fig.height=5}
+plot(len ~ dose, data=ToothGrowth,
+     col=supp)
+```
+
+Try it on the `iris` data
+=========================
+
+Questions (use formula)
+------------------------
+
+* Plot `Sepal.Length` by `Sepal.Width`
+* Add color using the `Species` column to the plot above
+* Make a boxplot of `Petal.Length` based on Species
+
+
+Basic tests with R formulas
+===========================
+
+Overview
+---------
+
+* t-test
+* one-way ANOVA
+* two-way ANOVA
+
+Data for examples
+-----------------
+
+We'll be looking more closely at the ToothGrowth data.
+
+Use `?ToothGrowth` for details.
+
+```{r}
+table(ToothGrowth[,c('supp', 'dose')])
+```
+
+Boxplot of data
+---------------
+
+```{r}
+boxplot(len ~ supp + dose, data=ToothGrowth)
+```
+
+t-test
+-----------
+
+Suppose we just want to compare these two groups...
+
+```{r, fig.height=5}
+boxplot(len ~ supp, data=ToothGrowth)
+```
+
+t-test (cont.)
+--------------
+
+```{r}
+t.test(len ~ supp, data=ToothGrowth)
+```
+
+one-way ANOVA
+-------------
+
+```{r}
+fit <- aov(len ~ dose, data=ToothGrowth)
+summary(fit)
+```
+
+two-way ANOVA
+-------------
+
+```{r}
+fit <- aov(len ~ supp*dose, data=ToothGrowth)
+summary(fit)
+```
+
+two-way ANOVA, why the `*`?
+----------------------------
+
+```{r}
+fit <- aov(len ~ supp + dose, data=ToothGrowth)
+summary(fit)
+```
+
+**without the `*` we left out the interaction!**
+

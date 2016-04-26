@@ -1,0 +1,59 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Data Analysis and Reporting with R\n\n\nData analysis is a core skill in many fields of research. \nIn this course, you will learn the fundamentals of analyzing data with R: reading in data, processing it, and performing statistical analyses. \nIn the name of preserving your sanity (and time), we put strong emphasis on organizing your R analyses, as well as generating meaningful reports and visualizations.\nNo prior programming experience necessary. \nVery mild exposure to statistics will be useful, but isn't necessary either.\n\n\nFor simple, interactive lessons on some of the topics we'll cover, see \ntryr.codeschool.com\n\n\nHow to Use This Course\n\n\nDownload the zipped course materials here\n\n\nBelieve it or not, everything used to create the pages of this site were done in R.\nThis was done using three tools:\n\n\n\n\nRstudio\n - an interface that makes working with R much easier.\n\n\nRmarkdown\n - a simple way to write a report that can be turned into a web page or pdf.\n\n\nR code\n - the actual R part that does the data analysis\n\n\n\n\nI'll walk you through getting the course materials, but in case you want to try beforehand there are instructions in \nthis clip\n.\n\n\nAsking Questions\n\n\nFeel free to contact me (machow@princeton.edu), or \nraise an issue on github\n.\n\n\nSet Up\n\n\nScreencasts\n\n\nIn case you have trouble with installing R and Rstudio, these screencasts below will walk through the process.\n\n\n\n\nWindows\n\n\nMac\n\n\nLinux (Debian)\n\n\n\n\nInstall R, Rstudio, Rmarkdown\n\n\nGo to \nthis site\n and download R by clicking the link corresponding to your operating system (shown below).\n\n\n\n\nOnce R is installed, \ndownload and install Rstudio\n. \nAt this point, you should be able to open Rstudio, but check the screencasts above if you're not sure how.\nOnce you open Rstudio, it should look something like this the image below.\n\n\n\n\nMake sure it works\n\n\nThe following screenshots will walk you through testing that everything is ready to go. If it's not clear, here is a \nvery short screen cast of the process\n. We'll explain what's happening in more detail during the workshop.\n\n\nCreate an Rmarkdown document, and install the required packages:\n\n\n\n\n\n\n Test generating a report \n\n\n\n\n\n\n Profit \n\n\nWhen your report succesfully generates, you should something similar to the image below. We'll explain what each step of this process means during the course.\n\n\n\n\nFAQ\n\n\nAs we go through the course, we will update this section based on questions that arise.\n\n\n\n\n\n\nI'm on Windows 10 and can't open Rstudio\n\nAssuming you've installed Rstudio succesfully, look at \nhow to find apps in Windows 10\n.\n\n\n\n\n\n\nWhat is a working directory?\n  \nwatch (1.5 mins)\n\nIt's where R begins when looking for a file. So if I am in my \n~/home\n directory, and use the command \nread.csv('a_file.csv')\n, then R will look for the file in that directory. \n\n\n\n\n\n\nWhat if my document won't knit?\n  \nwatch (2 mins)\n\nYou should (1) set your working directory to where the document is, (2) clear your environment, (3) run all the chunks in your document to look for errors.\nR normally stops knitting when it runs into errors.\nHowever, putting the chunk below at the top of your document will print R errors in your report.\n\n\n\n\n\n\n```{r}\nlibrary(knitr)\nopts_chunk$set(error=TRUE)\n```", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#data-analysis-and-reporting-with-r", 
+            "text": "Data analysis is a core skill in many fields of research. \nIn this course, you will learn the fundamentals of analyzing data with R: reading in data, processing it, and performing statistical analyses. \nIn the name of preserving your sanity (and time), we put strong emphasis on organizing your R analyses, as well as generating meaningful reports and visualizations.\nNo prior programming experience necessary. \nVery mild exposure to statistics will be useful, but isn't necessary either.  For simple, interactive lessons on some of the topics we'll cover, see  tryr.codeschool.com", 
+            "title": "Data Analysis and Reporting with R"
+        }, 
+        {
+            "location": "/#how-to-use-this-course", 
+            "text": "Download the zipped course materials here  Believe it or not, everything used to create the pages of this site were done in R.\nThis was done using three tools:   Rstudio  - an interface that makes working with R much easier.  Rmarkdown  - a simple way to write a report that can be turned into a web page or pdf.  R code  - the actual R part that does the data analysis   I'll walk you through getting the course materials, but in case you want to try beforehand there are instructions in  this clip .", 
+            "title": "How to Use This Course"
+        }, 
+        {
+            "location": "/#asking-questions", 
+            "text": "Feel free to contact me (machow@princeton.edu), or  raise an issue on github .", 
+            "title": "Asking Questions"
+        }, 
+        {
+            "location": "/#set-up", 
+            "text": "", 
+            "title": "Set Up"
+        }, 
+        {
+            "location": "/#screencasts", 
+            "text": "In case you have trouble with installing R and Rstudio, these screencasts below will walk through the process.   Windows  Mac  Linux (Debian)", 
+            "title": "Screencasts"
+        }, 
+        {
+            "location": "/#install-r-rstudio-rmarkdown", 
+            "text": "Go to  this site  and download R by clicking the link corresponding to your operating system (shown below).   Once R is installed,  download and install Rstudio . \nAt this point, you should be able to open Rstudio, but check the screencasts above if you're not sure how.\nOnce you open Rstudio, it should look something like this the image below.", 
+            "title": "Install R, Rstudio, Rmarkdown"
+        }, 
+        {
+            "location": "/#make-sure-it-works", 
+            "text": "The following screenshots will walk you through testing that everything is ready to go. If it's not clear, here is a  very short screen cast of the process . We'll explain what's happening in more detail during the workshop.  Create an Rmarkdown document, and install the required packages:     Test generating a report      Profit   When your report succesfully generates, you should something similar to the image below. We'll explain what each step of this process means during the course.", 
+            "title": "Make sure it works"
+        }, 
+        {
+            "location": "/#faq", 
+            "text": "As we go through the course, we will update this section based on questions that arise.    I'm on Windows 10 and can't open Rstudio \nAssuming you've installed Rstudio succesfully, look at  how to find apps in Windows 10 .    What is a working directory?    watch (1.5 mins) \nIt's where R begins when looking for a file. So if I am in my  ~/home  directory, and use the command  read.csv('a_file.csv') , then R will look for the file in that directory.     What if my document won't knit?    watch (2 mins) \nYou should (1) set your working directory to where the document is, (2) clear your environment, (3) run all the chunks in your document to look for errors.\nR normally stops knitting when it runs into errors.\nHowever, putting the chunk below at the top of your document will print R errors in your report.    ```{r}\nlibrary(knitr)\nopts_chunk$set(error=TRUE)\n```", 
+            "title": "FAQ"
+        }, 
+        {
+            "location": "/doc/overview/", 
+            "text": "", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/doc/slides/", 
+            "text": "Slides\n\n\nDescription\n\n\nHomework\n\n\n\n\n\n\n\n\n\n\n0a-r-intro\n\n\nIntroduction to R\n\n\nquiz\n\n\n\n\n\n\n0b-rmarkdown\n\n\nCreating reports with Rmarkdown\n\n\nquiz\n\n\n\n\n\n\n0c-df-types-funcs\n\n\nData.frames, types, functions\n\n\nquiz\n\n\n\n\n\n\n\n\nBaby names data set\n\n\nreport\n\n\n\n\n\n\n1a-basic-plotting\n\n\nFour basic plots w/ customization\n\n\n\n\n\n\n\n\n1b-formulas\n\n\nUsing formulas in plots and tests\n\n\n\n\n\n\n\n\n\n\nWorking memory training data set\n\n\nreport", 
+            "title": "Slides"
+        }
+    ]
+}

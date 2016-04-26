@@ -1,0 +1,48 @@
+---
+title: "making plots"
+author: "Michael Chow"
+date: "March 30, 2016"
+output: html_document
+---
+
+How to make Plots
+=================
+
+Create Data
+-----------
+
+```{r}
+exp_dat <- data.frame(
+  year = 1990:2000, 
+  dv = 1:11
+)
+
+line_dat <- data.frame(
+  year = 1990:2000,
+  dv = 5
+)
+```
+
+Basic Plot
+----------
+
+```{r}
+plot(exp_dat$year, exp_dat$dv)
+lines(line_dat$year, line_dat$dv)
+```
+
+More Plot arguments
+-------------------
+
+```{r}
+
+plot(exp_dat$year, exp_dat$dv, 
+     type='l',         # draw as a line
+     ylim = c(0, 20),  # change y-axis limits
+     col = 'red',      # change line color
+     main = 'plot title'
+)
+lines(line_dat$year, line_dat$dv, col = 'blue')
+
+```
+

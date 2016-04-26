@@ -1,0 +1,68 @@
+---
+title: "download and process data"
+author: "Michael Chow"
+date: "March 30, 2016"
+output: html_document
+---
+
+Baby Names Homework
+===================
+
+Read in the file `baby-names.csv`
+---------------------------------
+
+```{r}
+dat <- read.csv('baby-names.csv')
+```
+
+
+What are the top baby names?
+----------------------------------------------
+
+```{r}
+top_names <- subset(dat, rank==1)
+```
+
+In on command, how would you get the top 5 baby names for males only?
+-------------------------------------------------------------------
+
+```{r}
+
+top_males <- subset(dat, rank < 5 & gender == "M")
+
+```
+
+Plot the frequency for the name John across time (i.e. make time the x-axis)
+------------------------------------------------------------------------
+
+The data frame with only the name John should be 135 rows, so make sure it's the right size.
+
+```{r}
+
+johns <- subset(dat, name == "John" & gender == "M")
+dim(johns)
+plot(johns$year, johns$freq, type='l')
+
+```
+
+Plot the frequency of John and Margaret across time
+-------------------------------------------------------
+
+```{r}
+dim(dat)
+margaret <- subset(dat, name == "Margaret" & gender == "F")
+john     <- subset(dat, name == "John" & gender == "M")
+
+plot(john$year, john$prop, type='l', 
+     ylim = c(min(margaret$prop, john$prop), max(margaret$prop, john$prop))
+)
+lines(margaret$year, margaret$prop)
+```
+
+Try exploring other interesting names and trends in the data!
+-----------------------------------------------------------------
+
+```{r}
+
+```
+
