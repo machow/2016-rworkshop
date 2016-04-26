@@ -63,11 +63,11 @@
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? '/Library/Frameworks/R.framework/Versions/3.1/Resources/library/revealjs/reveal.js-3.2.0/css/print/pdf.css' : '/Library/Frameworks/R.framework/Versions/3.1/Resources/library/revealjs/reveal.js-3.2.0/css/print/paper.css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '/Library/Frameworks/R.framework/Versions/3.2/Resources/library/revealjs/reveal.js-3.2.0/css/print/pdf.css' : '/Library/Frameworks/R.framework/Versions/3.2/Resources/library/revealjs/reveal.js-3.2.0/css/print/paper.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
     <!--[if lt IE 9]>
-    <script src="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/revealjs/reveal.js-3.2.0/lib/js/html5shiv.js"></script>
+    <script src="/Library/Frameworks/R.framework/Versions/3.2/Resources/library/revealjs/reveal.js-3.2.0/lib/js/html5shiv.js"></script>
     <![endif]-->
 
 </head>
@@ -227,105 +227,128 @@ Levels: A B C</code></pre>
 <h1>How it works</h1>
 <p>How does this work? Let’s see what’s going on inside the brackets.</p>
 <pre class="r"><code>mydata$rt &gt; 120</code></pre>
-<pre><code> [1] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <p>This returns a logical vector with 10 values (one for each row), where each value indicates whether each item in the vector mydata$rt is greater than 120. When we include this in the brackets before the comma, R will select only the rows where the statement is TRUE.</p>
 </section><section id="more-examples" class="slide level2">
 <h1>More examples</h1>
 <p>Here are a few other examples of conditional indexing:</p>
 <pre class="r"><code>mydata[mydata$id &lt;= 3,]   # when id is less than, or equal to 3</code></pre>
 <pre><code>  id condition        rt
-1  1         A  91.29721
-2  2         A 124.20799
-3  3         A 100.79180</code></pre>
+1  1         A  95.78060
+2  2         A  79.17462
+3  3         A 133.45126</code></pre>
 <pre class="r"><code>mydata[mydata$condition == &quot;A&quot;, ]</code></pre>
 <pre><code>  id condition        rt
-1  1         A  91.29721
-2  2         A 124.20799
-3  3         A 100.79180
-4  4         A 113.88396
-5  5         A 110.70548</code></pre>
+1  1         A  95.78060
+2  2         A  79.17462
+3  3         A 133.45126
+4  4         A  97.65771
+5  5         A  57.94438</code></pre>
 <p><em>important</em>: We use the “double equals” sign (<code>==</code>) to select the rows of mydata where condition is A.</p>
 </section><section id="use-the-symbol-when-both-conditions-must-be-true." class="slide level2">
 <h1>Use the <code>&amp;</code> symbol when both conditions must be TRUE.</h1>
 <p>Select all rows where <code>rt</code> is greater than 100, but less than 110.</p>
 <pre class="r"><code>mydata[mydata$rt &gt; 100 &amp; mydata$rt &lt; 110, ] </code></pre>
 <pre><code>  id condition       rt
-3  3         A 100.7918
-9  9         B 107.8331</code></pre>
+9  9         B 108.2176</code></pre>
 </section><section id="use-the-symbol-if-you-want-either-condition-to-be-true." class="slide level2">
 <h1>Use the <code>|</code> symbol if you want either condition to be TRUE.</h1>
 <p>Select all rows where <code>rt</code> is less than 90 OR greater than 130.</p>
 <pre class="r"><code>mydata[mydata$rt &lt; 90 | mydata$rt &gt; 130, ]</code></pre>
-<pre><code>  id condition      rt
-8  8         B 64.8361</code></pre>
+<pre><code>  id condition        rt
+2  2         A  79.17462
+3  3         A 133.45126
+5  5         A  57.94438</code></pre>
 </section><section id="parenthesis-to-control-order" class="slide level2">
 <h1>Parenthesis to control order</h1>
 <p>You can use parentheses to control the order of operations. Suppose we need the data for only the first 10 participants with extreme reaction times (&lt; 90 or &gt; 130). We could try:</p>
 <pre class="r"><code>mydata[mydata$id &lt;= 10 &amp; mydata$rt &lt; 90 | mydata$rt &gt; 130, ]</code></pre>
-<pre><code>  id condition      rt
-8  8         B 64.8361</code></pre>
+<pre><code>  id condition        rt
+2  2         A  79.17462
+3  3         A 133.45126
+5  5         A  57.94438</code></pre>
 <p>However, we need to group the two OR parts together..</p>
 <pre class="r"><code>mydata[mydata$id &lt;= 10 &amp; (mydata$rt &lt; 90 | mydata$rt &gt; 130), ]</code></pre>
-<pre><code>  id condition      rt
-8  8         B 64.8361</code></pre>
+<pre><code>  id condition        rt
+2  2         A  79.17462
+3  3         A 133.45126
+5  5         A  57.94438</code></pre>
+</section></section>
+<section><section id="reading-data" class="titleslide slide level1"><h1>Reading Data</h1></section><section id="csv-files" class="slide level2">
+<h1>CSV files</h1>
+<p>These are special files where commas separate each entry.</p>
+<pre class="r"><code>read.csv('example_dat.csv')</code></pre>
+<pre><code>    X id condition        rt
+1   1  1         A 101.56227
+2   2  2         A  95.31859
+3   3  3         A  95.40579
+4   4  4         A  89.12956
+5   5  5         A 109.92462
+6   6  6         B  59.92923
+7   7  7         B 148.50397
+8   8  8         B 103.96588
+9   9  9         B  92.12807
+10 10 10         B 115.11724</code></pre>
 </section></section>
 <section><section id="a-different-kind-of-r-function" class="titleslide slide level1"><h1>A Different Kind of R Function</h1></section><section id="the-with-function" class="slide level2">
 <h1>The <code>with</code> function</h1>
 <p>Up to this point, we’ve accessed columns of a data.frame using the <code>$</code> sign. However, the with function allows us to refer to the columns directly.</p>
 <pre class="r"><code># add 100 to first five entries of rt column
 with(mydata, rt[1:5] + 100)   # add 1 to the rt column</code></pre>
-<pre><code>[1] 191.2972 224.2080 200.7918 213.8840 210.7055</code></pre>
+<pre><code>[1] 195.7806 179.1746 233.4513 197.6577 157.9444</code></pre>
 <pre class="r"><code># same thing using dollar sign
 mydata$rt[1:5] + 100</code></pre>
-<pre><code>[1] 191.2972 224.2080 200.7918 213.8840 210.7055</code></pre>
+<pre><code>[1] 195.7806 179.1746 233.4513 197.6577 157.9444</code></pre>
 <pre class="r"><code># note that it doesn't change mydata!
 mydata$rt[1:5]     # does not have 100 added to it</code></pre>
-<pre><code>[1]  91.29721 124.20799 100.79180 113.88396 110.70548</code></pre>
+<pre><code>[1]  95.78060  79.17462 133.45126  97.65771  57.94438</code></pre>
 </section><section id="the-transform-function" class="slide level2">
 <h1>The transform function</h1>
 <p>The <code>transform</code> function is similar, but let’s you to copy a data.frame, and add or modify columns of data.</p>
 <pre class="r"><code>newdata &lt;- transform(mydata, high_rt = rt &gt; 120)
 head(newdata)    # notice the added high_rt column</code></pre>
 <pre><code>  id condition        rt high_rt
-1  1         A  91.29721   FALSE
-2  2         A 124.20799    TRUE
-3  3         A 100.79180   FALSE
-4  4         A 113.88396   FALSE
-5  5         A 110.70548   FALSE
-6  6         B 114.94330   FALSE</code></pre>
+1  1         A  95.78060   FALSE
+2  2         A  79.17462   FALSE
+3  3         A 133.45126    TRUE
+4  4         A  97.65771   FALSE
+5  5         A  57.94438   FALSE
+6  6         B  99.68325   FALSE</code></pre>
 <pre class="r"><code>with(newdata, rt[high_rt])    # we can refer to more than one column</code></pre>
-<pre><code>[1] 124.208</code></pre>
+<pre><code>[1] 133.4513</code></pre>
 </section><section id="the-subset-function" class="slide level2">
 <h1>The subset( ) function</h1>
 <p>There are many other ways to subset your data in R, using functions instead of brackets. One alternative is the subset( ) function. The subset function takes at least 2 <em>arguments</em>, the things you include inside of the parentheses when calling a function. The first argument is the object to be subsetted, and the second is a logical expression indicating which elements or rows to keep.</p>
 <pre class="r"><code>subset(mydata, rt &gt; 130) # This selects all rows of mydata where rt &gt; 130</code></pre>
-<pre><code>[1] id        condition rt       
-&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre><code>  id condition       rt
+3  3         A 133.4513</code></pre>
+</section><section id="more-subset" class="slide level2">
+<h1>More <code>subset</code></h1>
 <p>You can also indicate which columns you’d like to keep in the subset( ) function:</p>
 <pre class="r"><code># select the condition and rt columns where rt &gt; 130
 subset(mydata, rt &gt; 130, c(&quot;condition&quot;, &quot;rt&quot;))</code></pre>
-<pre><code>[1] condition rt       
-&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre><code>  condition       rt
+3         A 133.4513</code></pre>
 <p>You can be more explicit with the arguments if you’d like:</p>
 <pre class="r"><code># This is the same as the last example, but noting each argument explicitly
 subset(x = mydata, subset = rt &gt; 130, select = c(&quot;condition&quot;, &quot;rt&quot;))</code></pre>
-<pre><code>[1] condition rt       
-&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre><code>  condition       rt
+3         A 133.4513</code></pre>
 <p>If you don’t specify the arguments in this way, R will guess which code to pass to which argument.</p>
 </section></section>
 <section><section id="summarizing-data" class="titleslide slide level1"><h1>Summarizing Data</h1></section><section id="different-summary-functions" class="slide level2">
 <h1>Different summary functions</h1>
 <p>Now you know how to select different columns, rows, and cells of your data. Let’s learn some new functions that will help you summarize your data. We’ll focus on the reaction time data for our dataset.</p>
 <pre class="r"><code>mean(mydata$rt)  # Gives the mean (average) of RT</code></pre>
-<pre><code>[1] 102.0944</code></pre>
+<pre><code>[1] 99.86828</code></pre>
 <pre class="r"><code>sd(mydata$rt)  # Gives the standard deviation of RT</code></pre>
-<pre><code>[1] 16.58511</code></pre>
+<pre><code>[1] 20.82121</code></pre>
 <pre class="r"><code>median(mydata$rt)  # Gives the median value</code></pre>
-<pre><code>[1] 104.3125</code></pre>
+<pre><code>[1] 98.67048</code></pre>
 <pre class="r"><code>min(mydata$rt)  # Gives the minimum value</code></pre>
-<pre><code>[1] 64.8361</code></pre>
+<pre><code>[1] 57.94438</code></pre>
 <pre class="r"><code>max(mydata$rt)  # Gives the maximum value</code></pre>
-<pre><code>[1] 124.208</code></pre>
+<pre><code>[1] 133.4513</code></pre>
 </section><section id="table-function" class="slide level2">
 <h1><code>table</code> function</h1>
 <p>table( ) is another useful function. It counts the frequency of each value in a vector. For example, if we wanted to check how many participants we had per condition:</p>
