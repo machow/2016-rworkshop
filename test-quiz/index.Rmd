@@ -1,0 +1,43 @@
+---
+title: "data.frame, types, and more on functions"
+output: 
+  revealjs::revealjs_presentation:
+    theme: simple
+    transition: slide
+    center: true
+    highlight: null
+    template: pandoc_revealjs.html
+    includes:
+      before_body: ../.style/prefix.html
+      after_body: ../.style/datacamp.html
+    keep_md: true
+
+  
+---
+
+Title Slide
+====================
+
+Category 1 slide
+------------------
+
+Quiz
+----
+
+test
+
+<div>
+  <code>
+    a <- 1
+  </code>
+</div>
+
+```{r, child='quiz/0.md'}
+```
+<!--
+<section data-markdown="quiz/0.md"
+         data-separator="^\n\n\n"  
+         data-separator-vertical="^\n\n"  
+         data-separator-notes="^Note:">
+</section>
+-->

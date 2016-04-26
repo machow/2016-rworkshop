@@ -1,0 +1,42 @@
+---
+title: "test_escapes"
+output: 
+  md_document:
+    variant: 'markdown_github+raw_html'
+    md_extensions: '-markdown_in_html_blocks+raw_html'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+/usr/local/bin/pandoc +RTS -K512m -RTS index.md --to revealjs --from markdown_strict+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output index.html --smart --email-obfuscation none --self-contained --template pandoc_revealjs.html --variable center=true --slide-level 2 --variable theme=simple --variable transition=slide --variable backgroundTransition=default --include-before-body ../.style/prefix.html --include-after-body ../.style/datacamp.html --mathjax --variable 'mathjax-url:https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable revealjs-url=/Library/Frameworks/R.framework/Versions/3.2/Resources/library/revealjs/reveal.js-3.2.0 --no-highlight 
+
+
+
+A things
+
+<div>
+  <code>a <- 1</code>
+</div>
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
