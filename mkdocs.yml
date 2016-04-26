@@ -1,0 +1,7 @@
+site_name: 2016 R workshop
+docs_dir: '.'
+
+pages:
+  - 'Home': 'index.md'
+  - 'Overview': 'doc/overview.md'
+  - 'Slides': 'doc/slides.md'

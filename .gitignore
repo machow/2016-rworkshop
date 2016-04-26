@@ -4,4 +4,6 @@
 
 *_files
 
+.*.swp
+
 .DS_Store
